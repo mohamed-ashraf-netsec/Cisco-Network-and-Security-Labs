@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cisco Packet Tracer Lab Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm 15mm;
+            @bottom-left {
+                content: counter(page);
+                font-size: 9pt;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #718096;
+            }
+            @bottom-right {
+                content: "Eng: Mohamed Ashraf - Portfolio Project";
+                font-size: 9pt;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #718096;
+            }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2d3748;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        h1, h2, h3, h4 {
+            color: #1a365d;
+            font-weight: 700;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 24pt;
+            border-bottom: 3px solid #3182ce;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 16pt;
+            border-left: 5px solid #3182ce;
+            padding-left: 10px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        h3 {
+            font-size: 13pt;
+            color: #2b6cb0;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 11pt;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .meta-box {
+            background-color: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 15px;
+            margin-bottom: 30px;
+            font-size: 11pt;
+        }
+
+        .meta-box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .meta-box td {
+            padding: 5px 10px;
+            vertical-align: top;
+        }
+
+        .meta-box td.label {
+            font-weight: bold;
+            color: #2b6cb0;
+            width: 25%;
+        }
+
+        table.network-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10pt;
+        }
+
+        table.network-table th {
+            background-color: #2b6cb0;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+        }
+
+        table.network-table td {
+            padding: 8px 10px;
+            border: 1px solid #cbd5e0;
+            text-align: center;
+        }
+
+        table.network-table tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        .code-block {
+            background-color: #1a202c;
+            color: #edf2f7;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 9.5pt;
+            padding: 15px;
+            border-radius: 4px;
+            direction: ltr;
+            text-align: left;
+            white-space: pre-wrap;
+            margin: 15px 0;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+            page-break-inside: avoid;
+        }
+
+        .highlight-text {
+            color: #c53030;
+            font-weight: bold;
+        }
+
+        .success-text {
+            color: #2f855a;
+            font-weight: bold;
+        }
+
+        .badge {
+            background-color: #2b6cb0;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 9pt;
+            font-weight: bold;
+        }
+
+        .badge-static {
+            background-color: #dd6b20;
+        }
+
+        .badge-ospf {
+            background-color: #38a169;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Practical Project Report: OSPF Configuration and Deployment with Gateway of Last Resort</h1>
+    
+    <div class="meta-box">
+        <table>
+            <tr>
+                <td class="label">Prepared By:</td>
+                <td>Eng: Mohamed Ashraf</td>
+                <td class="label">Routing Protocol:</td>
+                <td>OSPFv2 (Single Area 0)</td>
+            </tr>
+            <tr>
+                <td class="label">Date of Execution:</td>
+                <td>2026-06-28</td>
+                <td class="label">Simulation Environment:</td>
+                <td>Cisco Packet Tracer</td>
+            </tr>
+            <tr>
+                <td class="label">Lab Title:</td>
+                <td colspan="3">OSPF Routing with Gateway of Last Resort (ASBR Advertisement)</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>1. Project Description and Topology Overview</h2>
+    <p>
+        The objective of this practical lab is to construct and secure an integrated dynamic routing environment utilizing <strong>OSPF Area 0</strong> across four core internal routers (R1, R2, R3, and R4). Additionally, it simulates external internet connectivity by linking the main edge router, <strong>R1</strong>, to an Internet Service Provider router (<strong>ISPR1</strong>) via a public IP subnet range.
+    </p>
+    <p>
+        In this scenario, the role of an <strong>Autonomous System Boundary Router (ASBR)</strong> is implemented on R1. A static default route pointing toward the ISP gateway next-hop is established, which is subsequently injected and dynamically propagated to all downstream routers within the internal OSPF domain. This setup guarantees that all local area network nodes automatically acquire a path to external networks without relying on manual configuration.
+    </p>
+
+    <h3>IP Addressing Plan</h3>
+    <table class="network-table">
+        <thead>
+            <tr>
+                <th>Router</th>
+                <th>Interface</th>
+                <th>IP Address</th>
+                <th>Subnet Mask</th>
+                <th>Connected Link / Target Network</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="3"><strong>R1 (ASBR)</strong></td>
+                <td>GigabitEthernet3/0</td>
+                <td>203.0.113.1</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>External Internet Link (Link to ISPR1)</td>
+            </tr>
+            <tr>
+                <td>GigabitEthernet0/0</td>
+                <td>10.0.12.1</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R2</td>
+            </tr>
+            <tr>
+                <td>FastEthernet1/0</td>
+                <td>10.0.13.1</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R3</td>
+            </tr>
+            <tr>
+                <td rowspan="2"><strong>R2</strong></td>
+                <td>GigabitEthernet0/0</td>
+                <td>10.0.12.2</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R1</td>
+            </tr>
+            <tr>
+                <td>FastEthernet1/0</td>
+                <td>10.0.24.1</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R4</td>
+            </tr>
+            <tr>
+                <td rowspan="2"><strong>R3</strong></td>
+                <td>FastEthernet1/0</td>
+                <td>10.0.13.2</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R1</td>
+            </tr>
+            <tr>
+                <td>FastEthernet2/0</td>
+                <td>10.0.34.1</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R4</td>
+            </tr>
+            <tr>
+                <td rowspan="3"><strong>R4</strong></td>
+                <td>FastEthernet1/0</td>
+                <td>10.0.24.2</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R2</td>
+            </tr>
+            <tr>
+                <td>FastEthernet2/0</td>
+                <td>10.0.34.2</td>
+                <td>255.255.255.252 (/30)</td>
+                <td>Internal Transit Link to R3</td>
+            </tr>
+            <tr>
+                <td>GigabitEthernet0/0</td>
+                <td>192.168.4.254</td>
+                <td>255.255.255.0 (/24)</td>
+                <td>Local Area Network (LAN Gateway)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <h2>2. Configuration Commands Applied to Edge Router R1</h2>
+    <p>
+        The interface facing the ISP is configured, an active static default route is established to avoid recursive lookup issues, and the OSPF process is initialized to inject and distribute the default path to the rest of the enterprise topology:
+    </p>
+    <div class="code-block">
+R1(config)# interface GigabitEthernet3/0
+R1(config-if)# ip address 203.0.113.1 255.255.255.252
+R1(config-if)# no shutdown
+R1(config-if)# exit
+
+R1(config)# router ospf 1
+R1(config-router)# router-id 1.1.1.1
+R1(config-router)# network 1.1.1.1 0.0.0.0 area 0
+R1(config-router)# network 10.0.12.0 0.0.0.3 area 0
+R1(config-router)# network 10.0.13.0 0.0.0.3 area 0
+R1(config-router)# passive-interface Loopback0
+R1(config-router)# default-information originate
+R1(config-router)# exit
+
+R1(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.2
+    </div>
+
+    <h2>3. Verification and Factual Output Analysis</h2>
+
+    <h3>A. Edge Router R1 Verification Outputs</h3>
+    <p>
+        Executing the command <code class="highlight-text">show ip protocols</code> confirms that the edge node recognizes its operational border role within the autonomous domain, generating external LSA records:
+        <br><span class="badge">It is an autonomous system boundary router</span>
+    </p>
+    <div class="code-block">
+R1(config)# do sh ip prot
+
+Routing Protocol is "ospf 1"
+  Outgoing update filter list for all interfaces is not set
+  Incoming update filter list for all interfaces is not set
+  Router ID 1.1.1.1
+  It is an autonomous system boundary router
+  Redistributing External Routes from,
+  Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+  Maximum path: 4
+  Routing for Networks:
+    1.1.1.1 0.0.0.0 area 0
+    10.0.12.0 0.0.0.3 area 0
+    10.0.13.0 0.0.0.3 area 0
+  Passive Interface(s):
+    Loopback0
+  Routing Information Sources:
+    Gateway         Distance      Last Update
+    1.1.1.1              110      00:12:24
+    2.2.2.2              110      00:12:24
+    3.3.3.3              110      00:14:59
+    4.4.4.4              110      00:12:43
+  Distance: (default is 110)
+    </div>
+
+    <p>
+        Reviewing the internal routing structure via <code class="highlight-text">show ip route</code> validates the complete installation of the default route entry <span class="badge badge-static">S*</span>, mapping the Gateway of last resort successfully:
+    </p>
+    <div class="code-block">
+R1(config)# do sh ip rou
+...
+Gateway of last resort is 203.0.113.2 to network 0.0.0.0
+
+      1.0.0.0/32 is subnetted, 1 subnets
+C        1.1.1.1 is directly connected, Loopback0
+      3.0.0.0/32 is subnetted, 1 subnets
+O        3.3.3.3 [110/2] via 10.0.13.2, 00:19:21, FastEthernet1/0
+      4.0.0.0/32 is subnetted, 1 subnets
+O        4.4.4.4 [110/3] via 10.0.12.2, 00:13:24, GigabitEthernet0/0
+                [110/3] via 10.0.13.2, 00:13:24, FastEthernet1/0
+      10.0.0.0/30 is subnetted, 4 subnets
+C        10.0.12.0 is directly connected, GigabitEthernet0/0
+C        10.0.13.0 is directly connected, FastEthernet1/0
+O        10.0.24.0 [110/2] via 10.0.12.2, 00:13:24, GigabitEthernet0/0
+O        10.0.34.0 [110/2] via 10.0.13.2, 00:15:56, FastEthernet1/0
+      203.0.113.0/30 is subnetted, 1 subnets
+C        203.0.113.0 is directly connected, GigabitEthernet3/0
+S* 0.0.0.0/0 [1/0] via 203.0.113.2
+    </div>
+
+    <div class="page-break"></div>
+
+    <h3>B. Internal Core Router R3 Output Analysis</h3>
+    <p>
+        As a consequence of the dynamic OSPF distribution mechanism, the database sync translates into a populated routing table on R3, appending an <span class="badge badge-ospf">O*E2</span> entry representing an external Type 2 metric path:
+    </p>
+    <div class="code-block">
+R3# sh ip rou
+...
+Gateway of last resort is 10.0.13.1 to network 0.0.0.0
+
+      1.0.0.0/32 is subnetted, 1 subnets
+O        1.1.1.1 [110/2] via 10.0.13.1, 00:25:48, FastEthernet1/0
+      3.0.0.0/32 is subnetted, 1 subnets
+C        3.3.3.3 is directly connected, Loopback0
+      4.0.0.0/32 is subnetted, 1 subnets
+O        4.4.4.4 [110/2] via 10.0.34.2, 00:22:06, FastEthernet2/0
+      10.0.0.0/30 is subnetted, 4 subnets
+O        10.0.12.0 [110/2] via 10.0.13.1, 00:19:46, FastEthernet1/0
+C        10.0.13.0 is directly connected, FastEthernet1/0
+O        10.0.24.0 [110/2] via 10.0.34.2, 00:20:06, FastEthernet2/0
+C        10.0.34.0 is directly connected, FastEthernet2/0
+O*E2 0.0.0.0/0 [110/1] via 10.0.13.1, 00:07:34, FastEthernet1/0
+    </div>
+
+    <h3>C. LAN Distribution Router R4 Output Analysis</h3>
+    <p>
+        Router R4 sits at the base of the topology, holding equal-cost paths (ECMP) toward the internet gateway via both transit layers (R2 and R3). It balances outbound traffic symmetrically over both paths:
+    </p>
+    <div class="code-block">
+R4# sh ip rou
+...
+Gateway of last resort is 10.0.24.1 to network 0.0.0.0
+
+      1.0.0.0/32 is subnetted, 1 subnets
+O        1.1.1.1 [110/3] via 10.0.24.1, 00:21:56, FastEthernet1/0
+                 [110/3] via 10.0.34.1, 00:21:56, FastEthernet2/0
+      3.0.0.0/32 is subnetted, 1 subnets
+O        3.3.3.3 [110/2] via 10.0.34.1, 00:24:31, FastEthernet2/0
+      4.0.0.0/32 is subnetted, 1 subnets
+C        4.4.4.4 is directly connected, Loopback0
+      10.0.0.0/30 is subnetted, 4 subnets
+O        10.0.12.0 [110/2] via 10.0.24.1, 00:21:56, FastEthernet1/0
+O        10.0.13.0 [110/2] via 10.0.34.1, 00:24:31, FastEthernet2/0
+C        10.0.24.0 is directly connected, FastEthernet1/0
+C        10.0.34.0 is directly connected, FastEthernet2/0
+C     192.168.4.0/24 is directly connected, GigabitEthernet0/0
+O*E2 0.0.0.0/0 [110/1] via 10.0.24.1, 00:09:46, FastEthernet1/0
+               [110/1] via 10.0.34.1, 00:09:46, FastEthernet2/0
+    </div>
+
+    <h3>D. Transit Core Router R2 Output Verification</h3>
+    <div class="code-block">
+R2# sh ip rout
+...
+Gateway of last resort is 10.0.12.1 to network 0.0.0.0
+
+      1.0.0.0/32 is subnetted, 1 subnets
+O        1.1.1.1 [110/2] via 10.0.12.1, 00:22:56, GigabitEthernet0/0
+      2.0.0.0/32 is subnetted, 1 subnets
+C        2.2.2.2 is directly connected, Loopback0
+      3.0.0.0/32 is subnetted, 1 subnets
+O        3.3.3.3 [110/3] via 10.0.24.2, 00:22:56, FastEthernet1/0
+                 [110/3] via 10.0.12.1, 00:22:56, GigabitEthernet0/0
+      4.0.0.0/32 is subnetted, 1 subnets
+O        4.4.4.4 [110/2] via 10.0.24.2, 00:23:18, FastEthernet1/0
+      10.0.0.0/30 is subnetted, 4 subnets
+C        10.0.12.0 is directly connected, GigabitEthernet0/0
+O        10.0.13.0 [110/2] via 10.0.12.1, 00:22:56, GigabitEthernet0/0
+C        10.0.24.0 is directly connected, FastEthernet1/0
+O        10.0.34.0 [110/2] via 10.0.24.2, 00:23:18, FastEthernet1/0
+O*E2 0.0.0.0/0 [110/1] via 10.0.12.1, 00:10:46, GigabitEthernet0/0
+    </div>
+
+    <h2>4. Engineering Conclusions & Lessons Learned</h2>
+    <p>
+        The infrastructure converges flawlessly following the deployment of appropriate interface matching parameters. Primary engineering insights derived from this implementation include:
+    </p>
+    <ul>
+        <li><strong>Resolution of Recursive Lookup Faults:</strong> A static default route next-hop must reside within an explicitly reachable, directly connected subnet structure. Failing this, the routing engine drops the path candidacy, halting propagation entirely.</li>
+        <li><strong>Scalable Dynamic injection:</strong> Utilizing <code>default-information originate</code> abstracts administrative overhead, preventing manual misconfigurations across scaling core frameworks.</li>
+        <li><strong>Symmetric Routing Redundancy:</strong> The lower boundaries showcase proper execution of Equal-Cost Multi-Pathing (ECMP), providing optimized load redistribution and deterministic fault-recovery windows.</li>
+    </ul>
+
+</body>
+</html>
