@@ -37,5 +37,5 @@ Every lab in this portfolio includes:
 ## 👤 Author & Contact
 **Eng. Mohamed Ashraf**  
 *Network & Cybersecurity Engineer*  
-- 💼 **LinkedIn:** [ضع رابط حسابك على لينكد إن هنا]  
+- 💼 **LinkedIn:** www.linkedin.com/in/mohamed-ashraf-11658724a 
 - ✉️ **Email:** moashraf4s0d@gmail.com
