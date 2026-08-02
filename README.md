@@ -23,7 +23,11 @@ Welcome to my hands-on technical repository. This portfolio documents my impleme
 | **13** | **Standard Access Control Lists (ACLs)** | Source Address Filtering, Inbound/Outbound Interface Placement | [View Lab](./Standard-ACLs-Lab) |
 | **14** | **Extended Access Control Lists (ACLs)** | Protocol & Port-based Filtering (TCP/UDP, HTTP, SSH, ICMP Block) | [View Lab](./Extended-ACLs-Lab) |
 | **15** | **IPv6 Fundamentals & Addressing** | SLAAC, Stateless/Stateful DHCPv6, IPv6 Subnetting & Neighbor Discovery | [View Lab](./basics-IPV6) |
-
+| 16 | DHCP Basic Configuration | DHCP Pool setup, Default Gateway assignment, Lease time management | [View Lab](DHCP-lab) |
+| 17 | DHCP Snooping & Security | Trust/Untrust ports, Binding database, Rogue DHCP prevention | [View Lab](DHCP-snooping-lab) |
+| 18 | Port Security Hardening | MAC address limitation, Violation modes (Restrict/Shutdown) | [View Lab](Port-security-lab) |
+| 19 | Static NAT Implementation | Inside/Outside mapping, Public-to-Private IP translation | [View Lab](NAT-Lab-static) |
+| 20 | Dynamic NAT Configuration | NAT Pool allocation, Access-list integration, Dynamic translation | [View Lab](NAT-lab-Dynamic) |
 ---
 
 ## 🔒 Security & Verification Methodology
